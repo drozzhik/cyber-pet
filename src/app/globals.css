@@ -1,0 +1,189 @@
+@import "tailwindcss";
+
+/* ═══════════════════════════════════════════════════════════════
+   HOLOGRAM PET — Design System
+   Palette: Deep Void + Warm Lavender + Mint + Amber + Salmon
+═══════════════════════════════════════════════════════════════ */
+
+@theme {
+  --color-void:        #050308;
+  --color-void-mid:   #0F0A1E;
+  --color-holo:       #B794F4;
+  --color-mint:       #68D391;
+  --color-amber:      #F6AD55;
+  --color-salmon:     #FC8181;
+  --color-sky:        #76E4F7;
+  --color-cyber-bg:   #050308;
+  --color-cyber-card: #0F0A1E;
+  --color-cyber-cyan: #76E4F7;
+  --color-cyber-purple: #B794F4;
+  --color-cyber-magenta: #FC8181;
+}
+
+:root {
+  --background: #050308;
+  --foreground: rgba(255, 255, 255, 0.88);
+}
+
+/* ── Base ─────────────────────────────────────────────────────── */
+* { -webkit-tap-highlight-color: transparent; }
+
+body {
+  background: radial-gradient(ellipse at 50% 20%, #1A0A3E 0%, #0D0720 45%, #050308 100%);
+  color: var(--foreground);
+  font-family: "Inter", "Exo 2", sans-serif;
+  overflow: hidden;
+  height: 100dvh;
+  width: 100%;
+  overscroll-behavior-y: none;
+  touch-action: manipulation;
+}
+
+/* ── Holographic Bubble ──────────────────────────────────────── */
+.holo-bubble {
+  background: radial-gradient(ellipse at 50% 35%,
+    rgba(183, 148, 244, 0.09) 0%,
+    rgba(118, 228, 247, 0.04) 50%,
+    transparent 75%
+  );
+  border: 1.5px solid rgba(183, 148, 244, 0.28);
+  box-shadow:
+    0 0 40px rgba(183, 148, 244, 0.12),
+    0 0 80px rgba(183, 148, 244, 0.05),
+    inset 0 0 40px rgba(183, 148, 244, 0.04);
+  animation: bubblePulse 4s ease-in-out infinite;
+}
+
+@keyframes bubblePulse {
+  0%, 100% {
+    box-shadow:
+      0 0 40px rgba(183, 148, 244, 0.12),
+      0 0 80px rgba(183, 148, 244, 0.05),
+      inset 0 0 40px rgba(183, 148, 244, 0.04);
+    border-color: rgba(183, 148, 244, 0.28);
+  }
+  50% {
+    box-shadow:
+      0 0 55px rgba(183, 148, 244, 0.20),
+      0 0 100px rgba(183, 148, 244, 0.08),
+      inset 0 0 55px rgba(183, 148, 244, 0.07);
+    border-color: rgba(183, 148, 244, 0.45);
+  }
+}
+
+/* ── Glass Panel (redesigned) ────────────────────────────────── */
+.glass-panel {
+  background: rgba(255, 255, 255, 0.032);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.075);
+  box-shadow: 0 4px 32px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255,255,255,0.06);
+}
+
+.glass-panel-magenta {
+  background: rgba(252, 129, 129, 0.05);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(252, 129, 129, 0.2);
+  box-shadow: 0 4px 32px rgba(0, 0, 0, 0.35);
+}
+
+/* ── Floating Dock ───────────────────────────────────────────── */
+.float-dock {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(32px) saturate(200%);
+  -webkit-backdrop-filter: blur(32px) saturate(200%);
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  box-shadow:
+    0 8px 40px rgba(0, 0, 0, 0.5),
+    0 1px 0 rgba(255, 255, 255, 0.08) inset,
+    0 -1px 0 rgba(255, 255, 255, 0.03) inset;
+  animation: floatDock 5s ease-in-out infinite;
+  margin-bottom: env(safe-area-inset-bottom);
+}
+
+@keyframes floatDock {
+  0%, 100% { transform: translateY(0px); }
+  50%       { transform: translateY(-3px); }
+}
+
+/* ── Bottom Sheet ────────────────────────────────────────────── */
+.bottom-sheet {
+  background: rgba(15, 10, 30, 0.92);
+  backdrop-filter: blur(40px) saturate(200%);
+  -webkit-backdrop-filter: blur(40px) saturate(200%);
+  border-top: 1px solid rgba(183, 148, 244, 0.2);
+  box-shadow: 0 -20px 60px rgba(0, 0, 0, 0.6);
+  animation: sheetSlideUp 0.32s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+
+@keyframes sheetSlideUp {
+  from { transform: translateY(100%); opacity: 0; }
+  to   { transform: translateY(0);    opacity: 1; }
+}
+
+/* ── Glow Text ───────────────────────────────────────────────── */
+.glow-holo    { text-shadow: 0 0 10px rgba(183,148,244,0.7), 0 0 20px rgba(183,148,244,0.3); }
+.glow-mint    { text-shadow: 0 0 10px rgba(104,211,145,0.7), 0 0 20px rgba(104,211,145,0.3); }
+.glow-amber   { text-shadow: 0 0 10px rgba(246,173, 85,0.7), 0 0 20px rgba(246,173, 85,0.3); }
+.glow-salmon  { text-shadow: 0 0 10px rgba(252,129,129,0.7), 0 0 20px rgba(252,129,129,0.3); }
+.glow-cyan    { text-shadow: 0 0 10px rgba(118,228,247,0.7), 0 0 20px rgba(118,228,247,0.3); }
+.glow-magenta { text-shadow: 0 0 10px rgba(252,129,129,0.7), 0 0 20px rgba(252,129,129,0.3); }
+.glow-purple  { text-shadow: 0 0 10px rgba(183,148,244,0.7), 0 0 20px rgba(183,148,244,0.3); }
+
+/* ── Pill Button ─────────────────────────────────────────────── */
+.pill-btn {
+  border-radius: 9999px;
+  transition: all 0.18s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.pill-btn:active { transform: scale(0.91); }
+
+/* ── Coin badge ──────────────────────────────────────────────── */
+.coin-badge {
+  background: rgba(246, 173, 85, 0.12);
+  border: 1px solid rgba(246, 173, 85, 0.35);
+  backdrop-filter: blur(16px);
+  box-shadow: 0 0 16px rgba(246,173,85,0.15);
+}
+
+/* ── Grid particles (ambient) ────────────────────────────────── */
+.ambient-grid {
+  background-image:
+    linear-gradient(rgba(183, 148, 244, 0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(183, 148, 244, 0.025) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+/* ── Float up animation for popups ──────────────────────────── */
+@keyframes floatUpAndFade {
+  0%   { transform: translateY(0) scale(1);    opacity: 1; }
+  100% { transform: translateY(-80px) scale(1.15); opacity: 0; }
+}
+
+/* ── Scanlines (lighter) ─────────────────────────────────────── */
+.scanlines::before {
+  content: "";
+  display: block;
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    to bottom,
+    transparent 0px,
+    transparent 3px,
+    rgba(0, 0, 0, 0.08) 3px,
+    rgba(0, 0, 0, 0.08) 4px
+  );
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* ── Notification pop ────────────────────────────────────────── */
+@keyframes notifPop {
+  0%   { transform: translateX(-50%) translateY(-8px) scale(0.94); opacity: 0; }
+  60%  { transform: translateX(-50%) translateY(2px)  scale(1.02); opacity: 1; }
+  100% { transform: translateX(-50%) translateY(0)    scale(1);    opacity: 1; }
+}
+.notif-pop { animation: notifPop 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) both; }
+
+/* ── Orbitron font fallback ──────────────────────────────────── */
+.font-orbitron { font-family: "Orbitron", "Inter", sans-serif; font-weight: 900; }
