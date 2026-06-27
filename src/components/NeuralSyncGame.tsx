@@ -161,9 +161,8 @@ export default function NeuralSyncGame({ onClose }: Props) {
   };
 
   const handleWatchAd = () => {
-    setIsWatchingAd(true);
-    setTimeout(() => {
-      setIsWatchingAd(false);
+    const Adsgram = (window as any).Adsgram;
+    const onSuccess = () => {
       setAdWatched(true);
       setResult(prev => {
         if (!prev) return null;
@@ -172,7 +171,22 @@ export default function NeuralSyncGame({ onClose }: Props) {
           coinsEarned: prev.coinsEarned * 8
         };
       });
-    }, 3000);
+    };
+
+    if (Adsgram) {
+      const AdController = Adsgram.init({ blockId: "36421" });
+      AdController.show().then(() => {
+        onSuccess();
+      }).catch((err: any) => {
+        console.error("Adsgram error or skipped:", err);
+      });
+    } else {
+      setIsWatchingAd(true);
+      setTimeout(() => {
+        setIsWatchingAd(false);
+        onSuccess();
+      }, 3000);
+    }
   };
 
   const startGame = useCallback(() => {

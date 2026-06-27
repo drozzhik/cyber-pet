@@ -25,8 +25,19 @@ export default function AdSimulation({ onAdCompleted }: AdSimulationProps) {
   }, [isPlaying, countdown, onAdCompleted]);
 
   const startAd = () => {
-    setIsPlaying(true);
-    setCountdown(5);
+    const Adsgram = (window as any).Adsgram;
+    if (Adsgram) {
+      const AdController = Adsgram.init({ blockId: "36421" });
+      AdController.show().then(() => {
+        onAdCompleted(100);
+      }).catch((err: any) => {
+        console.error("Adsgram error or skipped:", err);
+      });
+    } else {
+      // Фолбэк на симуляцию, если блокировщик рекламы заблокировал скрипт
+      setIsPlaying(true);
+      setCountdown(5);
+    }
   };
 
   return (

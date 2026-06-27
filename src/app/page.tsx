@@ -327,9 +327,8 @@ export default function Home() {
   };
 
   const handleRebootAd = () => {
-    setIsWatchingRebootAd(true);
-    setTimeout(() => {
-      setIsWatchingRebootAd(false);
+    const Adsgram = (window as any).Adsgram;
+    const onSuccess = () => {
       setState(p => ({
         ...p,
         hunger: Math.max(p.hunger, 80),
@@ -337,7 +336,22 @@ export default function Home() {
         cleanliness: Math.max(p.cleanliness, 80),
       }));
       notify("⚙️ Система перезапущена бесплатно!");
-    }, 3000);
+    };
+
+    if (Adsgram) {
+      const AdController = Adsgram.init({ blockId: "36421" });
+      AdController.show().then(() => {
+        onSuccess();
+      }).catch((err: any) => {
+        console.error("Adsgram error or skipped:", err);
+      });
+    } else {
+      setIsWatchingRebootAd(true);
+      setTimeout(() => {
+        setIsWatchingRebootAd(false);
+        onSuccess();
+      }, 3000);
+    }
   };
 
   const handleAdCompleted = (reward: number) => {

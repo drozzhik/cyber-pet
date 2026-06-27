@@ -28,6 +28,10 @@ export default function RootLayout({
           src="https://telegram.org/js/telegram-web-app.js"
           strategy="beforeInteractive"
         />
+        <Script
+          src="https://sad.adsgram.ai/js/sad.min.js"
+          strategy="beforeInteractive"
+        />
       </head>
       <body className="min-h-full flex flex-col bg-cyber-bg text-gray-100 select-none scanlines cyber-grid" suppressHydrationWarning>
         {children}
