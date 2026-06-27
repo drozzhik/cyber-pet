@@ -293,7 +293,11 @@ export default function Home() {
   };
 
   const handleReaction = useCallback((_type: string) => {
-    setState(p => gainXp(3, { ...p, fun: Math.min(100, p.fun + 4) }));
+    setState(p => gainXp(3, { 
+      ...p, 
+      fun: Math.min(100, p.fun + 4),
+      coins: Math.round((p.coins + 0.3) * 10) / 10 
+    }));
   }, [gainXp]);
 
 
