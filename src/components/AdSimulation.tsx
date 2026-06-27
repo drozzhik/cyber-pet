@@ -31,7 +31,13 @@ export default function AdSimulation({ onAdCompleted }: AdSimulationProps) {
       AdController.show().then(() => {
         onAdCompleted(100);
       }).catch((err: any) => {
-        console.error("Adsgram error or skipped:", err);
+        if (err?.error) {
+          // Системная ошибка (блок на модерации и т.д.) - включаем симуляцию
+          setIsPlaying(true);
+          setCountdown(5);
+        } else {
+          console.warn("Adsgram skipped:", err);
+        }
       });
     } else {
       // Фолбэк на симуляцию, если блокировщик рекламы заблокировал скрипт

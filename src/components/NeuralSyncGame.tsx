@@ -178,7 +178,15 @@ export default function NeuralSyncGame({ onClose }: Props) {
       AdController.show().then(() => {
         onSuccess();
       }).catch((err: any) => {
-        console.error("Adsgram error or skipped:", err);
+        if (err?.error) {
+          setIsWatchingAd(true);
+          setTimeout(() => {
+            setIsWatchingAd(false);
+            onSuccess();
+          }, 3000);
+        } else {
+          console.warn("Adsgram skipped:", err);
+        }
       });
     } else {
       setIsWatchingAd(true);

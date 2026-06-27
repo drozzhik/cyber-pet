@@ -343,7 +343,15 @@ export default function Home() {
       AdController.show().then(() => {
         onSuccess();
       }).catch((err: any) => {
-        console.error("Adsgram error or skipped:", err);
+        if (err?.error) {
+          setIsWatchingRebootAd(true);
+          setTimeout(() => {
+            setIsWatchingRebootAd(false);
+            onSuccess();
+          }, 3000);
+        } else {
+          console.warn("Adsgram skipped:", err);
+        }
       });
     } else {
       setIsWatchingRebootAd(true);
