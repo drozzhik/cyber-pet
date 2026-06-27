@@ -468,6 +468,14 @@ export default function Shop({
             isEquipped = equippedCore === item.id;
           } else if (item.type === 'animation') {
             isEquipped = equippedAnimation === item.id;
+          } else if (item.type === 'headwear') {
+            isEquipped = equippedHeadwear === item.id;
+          } else if (item.type === 'wings') {
+            isEquipped = equippedWings === item.id;
+          } else if (item.type === 'thruster') {
+            isEquipped = equippedThruster === item.id;
+          } else if (item.type === 'base') {
+            isEquipped = equippedBase === item.id;
           }
 
           // Границы предметов
@@ -495,6 +503,14 @@ export default function Shop({
               onEquipCore(isEquipped ? null : item.id);
             } else if (item.type === 'animation') {
               onEquipAnimation(isEquipped ? null : item.id);
+            } else if (item.type === 'headwear') {
+              onEquipHeadwear(isEquipped ? null : item.id);
+            } else if (item.type === 'wings') {
+              onEquipWings(isEquipped ? null : item.id);
+            } else if (item.type === 'thruster') {
+              onEquipThruster(isEquipped ? null : item.id);
+            } else if (item.type === 'base') {
+              onEquipBase(isEquipped ? null : item.id);
             }
           };
 
