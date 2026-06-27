@@ -200,6 +200,44 @@ const SHOP_ITEMS: ShopItem[] = [
     description: "Голографические кошачьи ушки на макушке.",
     icon: "🐱",
   },
+  {
+    id: "hat_crown",
+    name: "Корона",
+    type: "headwear",
+    cost: 650,
+    effect: { fun: 65 },
+    description: "Маленькая золотая корона набок.",
+    icon: "👑",
+  },
+  {
+    id: "hat_cap",
+    name: "Кепка",
+    type: "headwear",
+    cost: 250,
+    effect: { fun: 30 },
+    description: "Обычная кепка с пропеллером.",
+    icon: "🧢",
+  },
+
+  // 8.5 Лицо (Face)
+  {
+    id: "eyes_cute",
+    name: "Милые глазки",
+    type: "face",
+    cost: 200,
+    effect: { fun: 25 },
+    description: "Большие милые голографические глаза.",
+    icon: "🥺",
+  },
+  {
+    id: "eyes_angry",
+    name: "Гневный взгляд",
+    type: "face",
+    cost: 300,
+    effect: { fun: 35 },
+    description: "Агрессивный прищур хакера.",
+    icon: "😠",
+  },
 
   // 9. Крылья (Wings)
   {
@@ -273,6 +311,7 @@ interface ShopProps {
   equippedCore: string | null;
   equippedAnimation: string | null;
   equippedHeadwear: string | null;
+  equippedFace: string | null;
   equippedWings: string | null;
   equippedThruster: string | null;
   equippedBase: string | null;
@@ -280,6 +319,7 @@ interface ShopProps {
   onPurchaseClothes: (itemId: string, cost: number) => void;
   onPurchaseDecor: (itemId: string, cost: number) => void;
   onPurchaseVfx: (itemId: string, cost: number) => void;
+  onPurchaseFace: (itemId: string, cost: number) => void;
   onPurchaseDrone: (itemId: string, cost: number) => void;
   onPurchaseCore: (itemId: string, cost: number) => void;
   onPurchaseAnimation: (itemId: string, cost: number) => void;
@@ -294,6 +334,7 @@ interface ShopProps {
   onEquipDrone: (itemId: string | null) => void;
   onEquipCore: (itemId: string | null) => void;
   onEquipAnimation: (itemId: string | null) => void;
+  onEquipFace: (itemId: string | null) => void;
   onEquipHeadwear: (itemId: string | null) => void;
   onEquipWings: (itemId: string | null) => void;
   onEquipThruster: (itemId: string | null) => void;
@@ -310,6 +351,7 @@ export default function Shop({
   equippedDrone,
   equippedCore,
   equippedAnimation,
+  equippedFace,
   equippedHeadwear,
   equippedWings,
   equippedThruster,
@@ -318,6 +360,7 @@ export default function Shop({
   onPurchaseClothes,
   onPurchaseDecor,
   onPurchaseVfx,
+  onPurchaseFace,
   onPurchaseDrone,
   onPurchaseCore,
   onPurchaseAnimation,
@@ -332,18 +375,20 @@ export default function Shop({
   onEquipDrone,
   onEquipCore,
   onEquipAnimation,
+  onEquipFace,
   onEquipHeadwear,
   onEquipWings,
   onEquipThruster,
   onEquipBase,
 }: ShopProps) {
-  const [activeTab, setActiveTab] = useState<'food' | 'visual' | 'env' | 'tuning' | 'headwear' | 'wings' | 'thruster' | 'base'>('food');
+  const [activeTab, setActiveTab] = useState<'food' | 'visual' | 'env' | 'tuning' | 'face' | 'headwear' | 'wings' | 'thruster' | 'base'>('food');
 
   const filteredItems = SHOP_ITEMS.filter((item) => {
     if (activeTab === 'food') return item.type === 'food';
     if (activeTab === 'visual') return item.type === 'clothes';
     if (activeTab === 'env') return item.type === 'decor' || item.type === 'drone';
     if (activeTab === 'tuning') return item.type === 'vfx' || item.type === 'core' || item.type === 'animation';
+    if (activeTab === 'face') return item.type === 'face';
     if (activeTab === 'headwear') return item.type === 'headwear';
     if (activeTab === 'wings') return item.type === 'wings';
     if (activeTab === 'thruster') return item.type === 'thruster';
@@ -404,6 +449,16 @@ export default function Shop({
           }`}
         >
           ⚡ ТЮНИНГ
+        </button>
+        <button
+          onClick={() => setActiveTab('face')}
+          className={`shrink-0 px-4 py-1.5 font-orbitron text-[10px] font-bold rounded-lg border transition-all duration-300 ${
+            activeTab === 'face'
+              ? 'bg-cyber-cyan/20 border-cyber-cyan text-cyber-cyan shadow-[0_0_8px_rgba(0,240,255,0.2)]'
+              : 'border-gray-800 text-gray-400 hover:border-cyber-cyan/30 hover:text-cyber-cyan/70'
+          }`}
+        >
+          👀 ЛИЦО
         </button>
         <button
           onClick={() => setActiveTab('headwear')}
@@ -468,6 +523,8 @@ export default function Shop({
             isEquipped = equippedCore === item.id;
           } else if (item.type === 'animation') {
             isEquipped = equippedAnimation === item.id;
+          } else if (item.type === 'face') {
+            isEquipped = equippedFace === item.id;
           } else if (item.type === 'headwear') {
             isEquipped = equippedHeadwear === item.id;
           } else if (item.type === 'wings') {
@@ -503,6 +560,8 @@ export default function Shop({
               onEquipCore(isEquipped ? null : item.id);
             } else if (item.type === 'animation') {
               onEquipAnimation(isEquipped ? null : item.id);
+            } else if (item.type === 'face') {
+              onEquipFace(isEquipped ? null : item.id);
             } else if (item.type === 'headwear') {
               onEquipHeadwear(isEquipped ? null : item.id);
             } else if (item.type === 'wings') {
@@ -522,6 +581,7 @@ export default function Shop({
             else if (item.type === 'drone') onPurchaseDrone(item.id, item.cost);
             else if (item.type === 'core') onPurchaseCore(item.id, item.cost);
             else if (item.type === 'animation') onPurchaseAnimation(item.id, item.cost);
+            else if (item.type === 'face') onPurchaseFace(item.id, item.cost);
             else if (item.type === 'headwear') onPurchaseHeadwear(item.id, item.cost);
             else if (item.type === 'wings') onPurchaseWings(item.id, item.cost);
             else if (item.type === 'thruster') onPurchaseThruster(item.id, item.cost);
@@ -536,7 +596,7 @@ export default function Shop({
               {/* Иконка */}
               <div
                 className={`shrink-0 w-11 h-11 rounded-lg flex items-center justify-center text-xl bg-cyber-bg border ${
-                  activeTab === 'food' ? 'border-cyber-cyan/25' : (activeTab === 'visual' || activeTab === 'headwear' || activeTab === 'wings') ? 'border-cyber-magenta/25' : (activeTab === 'env' || activeTab === 'base') ? 'border-cyber-purple/25' : 'border-amber-400/25'
+                  (activeTab === 'food' || activeTab === 'face') ? 'border-cyber-cyan/25' : (activeTab === 'visual' || activeTab === 'headwear' || activeTab === 'wings') ? 'border-cyber-magenta/25' : (activeTab === 'env' || activeTab === 'base') ? 'border-cyber-purple/25' : 'border-amber-400/25'
                 }`}
               >
                 {item.icon}
@@ -607,6 +667,8 @@ export default function Shop({
                               ? 'bg-cyber-magenta border-cyber-magenta text-white hover:shadow-[0_0_8px_rgba(255,0,127,0.4)] active:scale-95'
                               : (activeTab === 'env' || activeTab === 'base')
                               ? 'bg-cyber-purple border-cyber-purple text-white hover:shadow-[0_0_8px_rgba(188,19,254,0.4)] active:scale-95'
+                              : (activeTab === 'face')
+                              ? 'bg-cyber-cyan border-cyber-cyan text-cyber-bg hover:shadow-[0_0_8px_rgba(0,240,255,0.4)] active:scale-95'
                               : 'bg-amber-400 border-amber-400 text-white hover:shadow-[0_0_8px_rgba(251,191,36,0.4)] active:scale-95'
                             : 'border-gray-800 bg-transparent text-gray-600 cursor-not-allowed'
                         }`}
@@ -622,11 +684,15 @@ export default function Shop({
                               ? 'bg-cyber-magenta/25 border-cyber-magenta text-cyber-magenta shadow-[inset_0_0_4px_rgba(255,0,127,0.2)] hover:bg-cyber-magenta/5'
                               : (activeTab === 'env' || activeTab === 'base')
                               ? 'bg-cyber-purple/25 border-cyber-purple text-cyber-purple shadow-[inset_0_0_4px_rgba(188,19,254,0.2)] hover:bg-cyber-purple/5'
+                              : (activeTab === 'face')
+                              ? 'bg-cyber-cyan/25 border-cyber-cyan text-cyber-cyan shadow-[inset_0_0_4px_rgba(0,240,255,0.2)] hover:bg-cyber-cyan/5'
                               : 'bg-amber-400/25 border-amber-400 text-amber-400 shadow-[inset_0_0_4px_rgba(251,191,36,0.2)] hover:bg-amber-400/5'
                             : (activeTab === 'visual' || activeTab === 'headwear' || activeTab === 'wings')
                             ? 'bg-cyber-magenta border-cyber-magenta text-white hover:shadow-[0_0_8px_rgba(255,0,127,0.4)]'
                             : (activeTab === 'env' || activeTab === 'base')
                             ? 'bg-cyber-purple border-cyber-purple text-white hover:shadow-[0_0_8px_rgba(188,19,254,0.4)]'
+                            : (activeTab === 'face')
+                            ? 'bg-cyber-cyan border-cyber-cyan text-cyber-bg hover:shadow-[0_0_8px_rgba(0,240,255,0.4)]'
                             : 'bg-amber-400 border-amber-400 text-white hover:shadow-[0_0_8px_rgba(251,191,36,0.4)]'
                         }`}
                       >

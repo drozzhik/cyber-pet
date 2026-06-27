@@ -276,9 +276,9 @@ function PetModel({ state, isSleeping, isCleaning, onClickPart }: PetModelProps)
 
     onClickPart(part, e);
 
-    if (part === "body" && !isFlipping.current) {
-      isFlipping.current = true;
-      flipProgress.current = 0;
+    if (part === "body") {
+      // isFlipping.current = true;
+      // flipProgress.current = 0;
     } else if (part === "turbine") {
       isTurbineSpinning.current = true;
       turbineTimer.current = 1.2; // Крутить турбины 1.2 секунды
@@ -547,6 +547,50 @@ function PetModel({ state, isSleeping, isCleaning, onClickPart }: PetModelProps)
           <mesh position={[0.4, 0.2, 0]} rotation={[0, 0, -0.4]}>
             <coneGeometry args={[0.15, 0.4, 3]} />
             <meshBasicMaterial color="#ff007f" wireframe={true} />
+          </mesh>
+        </group>
+      )}
+      {state.equippedHeadwear === 'hat_crown' && (
+        <mesh position={[0.2, 0.95, 0.2]} rotation={[0.2, 0, -0.2]}>
+          <cylinderGeometry args={[0.15, 0.1, 0.2, 6]} />
+          <meshStandardMaterial color="#fbbf24" metalness={0.8} roughness={0.2} />
+        </mesh>
+      )}
+      {state.equippedHeadwear === 'hat_cap' && (
+        <group position={[0, 0.85, 0.3]} rotation={[0.1, 0, 0]}>
+          <mesh position={[0, 0, 0]}>
+            <sphereGeometry args={[0.3, 16, 16, 0, Math.PI * 2, 0, Math.PI / 2]} />
+            <meshStandardMaterial color="#3b82f6" />
+          </mesh>
+          <mesh position={[0, -0.05, 0.25]}>
+            <cylinderGeometry args={[0.2, 0.2, 0.05, 16]} />
+            <meshStandardMaterial color="#1d4ed8" />
+          </mesh>
+        </group>
+      )}
+
+      {/* В.2 Лицо (Face) */}
+      {state.equippedFace === 'eyes_cute' && (
+        <group position={[0, 0.1, 0.75]}>
+          <mesh position={[-0.25, 0, 0]}>
+            <sphereGeometry args={[0.12, 16, 16]} />
+            <meshBasicMaterial color="#ff69b4" />
+          </mesh>
+          <mesh position={[0.25, 0, 0]}>
+            <sphereGeometry args={[0.12, 16, 16]} />
+            <meshBasicMaterial color="#ff69b4" />
+          </mesh>
+        </group>
+      )}
+      {state.equippedFace === 'eyes_angry' && (
+        <group position={[0, 0.1, 0.72]}>
+          <mesh position={[-0.25, 0, 0]} rotation={[0, 0, -0.3]}>
+            <boxGeometry args={[0.2, 0.05, 0.1]} />
+            <meshBasicMaterial color="#ef4444" />
+          </mesh>
+          <mesh position={[0.25, 0, 0]} rotation={[0, 0, 0.3]}>
+            <boxGeometry args={[0.2, 0.05, 0.1]} />
+            <meshBasicMaterial color="#ef4444" />
           </mesh>
         </group>
       )}

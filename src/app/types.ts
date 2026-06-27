@@ -14,6 +14,7 @@ export interface PetState {
   equippedDrone: string | null;     // ID спутника
   equippedCore: string | null;      // ID ядра
   equippedAnimation: string | null; // ID стиля анимации
+  equippedFace: string | null;      // ID аксессуаров для мордочки (глаза)
   equippedHeadwear: string | null;  // ID головного убора
   equippedWings: string | null;     // ID крыльев
   equippedThruster: string | null;  // ID двигателей
@@ -28,7 +29,7 @@ export interface PetState {
 export interface ShopItem {
   id: string;
   name: string;
-  type: 'food' | 'clothes' | 'decor' | 'vfx' | 'drone' | 'core' | 'animation' | 'headwear' | 'wings' | 'thruster' | 'base';
+  type: 'food' | 'clothes' | 'decor' | 'vfx' | 'drone' | 'core' | 'animation' | 'face' | 'headwear' | 'wings' | 'thruster' | 'base';
   cost: number;
   effect: {
     hunger?: number;

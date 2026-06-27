@@ -27,6 +27,7 @@ const DEFAULT_STATE: PetState = {
   equippedDrone: null,
   equippedCore: null,
   equippedAnimation: null,
+  equippedFace: null,
   equippedHeadwear: null,
   equippedWings: null,
   equippedThruster: null,
@@ -296,7 +297,7 @@ export default function Home() {
     setState(p => gainXp(3, { 
       ...p, 
       fun: Math.min(100, p.fun + 4),
-      coins: Math.round((p.coins + 0.3) * 10) / 10 
+      coins: Math.round((p.coins + 0.1) * 10) / 10 
     }));
   }, [gainXp]);
 
@@ -373,10 +374,23 @@ export default function Home() {
   };
 
   const handleSendGift = () => {
+    triggerHaptic("medium");
+    setActiveSheet(null);
+    if (typeof window !== "undefined") {
+      const WebApp = (window as any).Telegram?.WebApp;
+      if (WebApp && WebApp.isVersionAtLeast && WebApp.isVersionAtLeast("6.7") && WebApp.switchInlineQuery) {
+        try {
+          WebApp.switchInlineQuery("gift_500", ["users", "groups"]);
+        } catch (e) {
+          notify("В Telegram это откроет меню выбора чата для отправки подарка!");
+        }
+      } else {
+        notify("В Telegram это откроет меню выбора чата для отправки подарка!");
+      }
+    }
+    // Локальное обновление для симуляции, если мы не в телеграме
     setLastGiftSentTime(Date.now());
     setState(p => gainXp(20, { ...p, coins: p.coins + 50, fun: Math.min(100, p.fun + 15) }));
-    setActiveSheet(null);
-    notify("🎁 Подарок отправлен!");
   };
 
   const claimDailyReward = () => {
@@ -510,6 +524,7 @@ export default function Home() {
             equippedDrone={state.equippedDrone}
             equippedCore={state.equippedCore}
             equippedAnimation={state.equippedAnimation}
+            equippedFace={state.equippedFace}
             equippedHeadwear={state.equippedHeadwear}
             equippedWings={state.equippedWings}
             equippedThruster={state.equippedThruster}
@@ -528,6 +543,9 @@ export default function Home() {
             }}
             onPurchaseAnimation={(id, cost) => {
               if (state.coins >= cost) setState(p => gainXp(30, { ...p, coins: p.coins - cost, purchasedItems: [...p.purchasedItems, id] }));
+            }}
+            onPurchaseFace={(id, cost) => {
+              if (state.coins >= cost) setState(p => gainXp(20, { ...p, coins: p.coins - cost, purchasedItems: [...p.purchasedItems, id] }));
             }}
             onPurchaseHeadwear={(id, cost) => {
               if (state.coins >= cost) setState(p => gainXp(30, { ...p, coins: p.coins - cost, purchasedItems: [...p.purchasedItems, id] }));
@@ -548,6 +566,7 @@ export default function Home() {
             onEquipDrone={id => setState(p => ({ ...p, equippedDrone: id }))}
             onEquipCore={id => setState(p => ({ ...p, equippedCore: id }))}
             onEquipAnimation={id => setState(p => ({ ...p, equippedAnimation: id }))}
+            onEquipFace={id => setState(p => ({ ...p, equippedFace: id }))}
             onEquipHeadwear={id => setState(p => ({ ...p, equippedHeadwear: id }))}
             onEquipWings={id => setState(p => ({ ...p, equippedWings: id }))}
             onEquipThruster={id => setState(p => ({ ...p, equippedThruster: id }))}
@@ -676,25 +695,23 @@ export default function Home() {
           </div>
         </div>
 
-        {/* ── Кнопка HACK NETWORK (Над доком) ─────────────────────────── */}
-        <div className="absolute bottom-32 left-8 flex pointer-events-auto z-20">
+        {/* ── Левая панель дополнительных действий ─────────────────────────── */}
+        <div className="absolute bottom-32 left-8 flex flex-col gap-4 pointer-events-auto z-20">
+          {/* Кнопка HACK NETWORK (теперь круглая) */}
           <button 
             onClick={() => { triggerHaptic("medium"); setActiveSheet("hack"); }}
-            className="px-6 py-2.5 rounded-full font-orbitron font-black tracking-widest text-[11px] uppercase transition-all active:scale-95 flex items-center gap-2"
+            className="w-11 h-11 rounded-full text-xl flex items-center justify-center transition-all active:scale-95"
             style={{
-              background: "linear-gradient(90deg, rgba(252,129,129,0.15) 0%, rgba(183,148,244,0.15) 100%)",
+              background: "rgba(252,129,129,0.15)",
               border: "1px solid rgba(252,129,129,0.6)",
-              color: "#FC8181",
-              boxShadow: "0 0 20px rgba(252,129,129,0.3)",
+              boxShadow: "0 0 15px rgba(252,129,129,0.3)",
               backdropFilter: "blur(10px)"
             }}
           >
-            <span className="animate-pulse">⚠️</span> TARGET NETWORK
+            <span className="animate-pulse drop-shadow-[0_0_8px_#FC8181]">⚠️</span>
           </button>
-        </div>
 
-        {/* ── Кнопка Цвет (Над доком справа) ─────────────────────────── */}
-        <div className="absolute bottom-32 right-8 flex pointer-events-auto z-20">
+          {/* Кнопка Цвет */}
           <button 
             onClick={() => { triggerHaptic("medium"); setActiveSheet("color_picker"); }}
             className="w-11 h-11 rounded-full text-xl flex items-center justify-center transition-all active:scale-95"
